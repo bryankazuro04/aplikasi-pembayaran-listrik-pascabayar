@@ -13,16 +13,16 @@ class tagihan extends Model
     use HasFactory;
 
     protected $table = 'tagihans';
-    protected $fillable = ['id_penggunaan', 'id_pelanggan', 'bulan', 'tahun', 'jumlah_', 'status_pembayaran'];
+    protected $fillable = ['id_penggunaan', 'id_pelanggan', 'bulan', 'tahun', 'jumlah_meter', 'status_pembayaran'];
 
     public function pelanggan() : BelongsTo
     {
-        return $this->belongsTo(Pelanggan::class);
+        return $this->belongsTo(Pelanggan::class, 'id_pelanggan', 'id');
     }
 
     public function penggunaan() : BelongsTo
     {
-        return $this->belongsTo(Penggunaan::class);
+        return $this->belongsTo(Penggunaan::class, 'id_penggunaan', 'id');
     }
 
     public function pembayaran() : HasOne

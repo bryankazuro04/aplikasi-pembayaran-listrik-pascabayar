@@ -36,4 +36,12 @@ class pelanggan extends Authenticatable
     {
         return $this->hasMany(penggunaan::class, 'id_pelanggan');
     }
+
+    public static function searchByNomorKwh($query)
+    {
+        return self::where('nomor_kwh', 'LIKE', "%{$query}%")
+            ->orWhere('nama_pelanggan', 'LIKE', "%{$query}%")
+            ->limit(10)
+            ->get();
+    }
 }

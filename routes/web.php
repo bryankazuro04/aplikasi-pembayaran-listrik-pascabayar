@@ -23,9 +23,17 @@ Route::resources([
     'penggunaan' => PenggunaanController::class, 
     'tarif' => TarifController::class
 ]);
+
+Route::get('/pelanggan/search', [PelangganController::class, 'search'])->name('pelanggan.search');
+
+
 // Route::middleware(['auth'])->group(function () {
 // });
 
 // Route::middleware(['auth:pelanggan'])->group(function () {
 // });
-Route::resource('pelanggan', PelangganController::class);
+// Route::resource('pelanggan', PelangganController::class);
+
+
+
+Route::get('/pelanggan/get-by-nomor-kwh', [PelangganController::class, 'getByNomorKwh'])->name('pelanggan.getByNomorKwh');

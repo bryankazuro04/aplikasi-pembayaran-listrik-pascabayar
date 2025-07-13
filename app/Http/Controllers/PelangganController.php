@@ -6,6 +6,9 @@ use App\Models\pelanggan;
 use App\Http\Requests\StorepelangganRequest;
 use App\Http\Requests\UpdatepelangganRequest;
 use App\Models\tagihan;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class PelangganController extends Controller
 {
@@ -38,7 +41,7 @@ class PelangganController extends Controller
         $request->merge([
             'password' => bcrypt($request->password),
         ]);
-        pelanggan::create($request);
+        pelanggan::create($request->validated());
         return redirect()->route('dashboard');
     }
 
@@ -47,16 +50,60 @@ class PelangganController extends Controller
      */
     public function show()
     {
-        // 
+        //
     }
+
+    /**
+     * Search for a pelanggan by nomor_kwh or nama_pelanggan.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function search(Request $request)
+    {
+        $query = $request->get('query');
+
+        if(empty($query)) {
+            return response()->json([]);
+        }
+
+        $pelanggan = pelanggan::searchByNomorKwh($query);
+
+        return response()->json($pelanggan->map(function($item) {
+            return [
+                'id' => $item->id,
+                'nomor_kwh' => $item->nomor_kwh,
+                'nama_pelanggan' => $item->nama_pelanggan,
+            ];
+        }));
+    }
+
+    public function getByNomorKwh(Request $request)
+    {
+        $nomorKwh = $request->get('nomor_kwh');
+
+        $pelanggan = pelanggan::where('nomor_kwh', $nomorKwh)->first();
+
+        if($pelanggan) {
+            return response()->json([
+                'success' => true,
+                'data' => $pelanggan
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Pelanggan tidak ditemukan'
+        ]);
+    }
+    
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(pelanggan $pelanggan)
     {
-        $tarif = \App\Models\tarif::all();
-        return view('pelanggan.edit', compact('pelanggan', 'tarif'));
+        //
     }
 
     /**
@@ -64,7 +111,7 @@ class PelangganController extends Controller
      */
     public function update(UpdatepelangganRequest $request, pelanggan $pelanggan)
     {
-        $pelanggan::where('id', $pelanggan->id)->update($request->validated());
+        $pelanggan->update($request->validated());
         return redirect()->route('pelanggan.index')->with('success', 'Pelanggan berhasil diperbarui');
     }
 

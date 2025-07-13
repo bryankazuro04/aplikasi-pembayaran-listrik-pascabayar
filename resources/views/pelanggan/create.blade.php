@@ -72,12 +72,12 @@
               </div>
 
               <!-- Password Confirmed -->
-              {{-- <div class="space-y-2 md:col-span-2">
+              <div class="space-y-2 md:col-span-2">
                 <label for="passwordConfirmed" class="block text-sm font-medium text-gray-700">Password Confirmed</label>
-                <input id="passwordConfirmed" name="passwordConfirmed" type="password"
+                <input id="passwordConfirmed" name="password_confirmation" type="password"
                   class="block w-full rounded-lg border border-gray-300 px-4 py-2.5 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                   placeholder="********" required></input>
-              </div> --}}
+              </div>
             </div>
           </div>
 
@@ -87,9 +87,9 @@
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
               <!-- Nomor Meter -->
               <div class="space-y-2">
-                <label for="nomor_meter" class="block text-sm font-medium text-gray-700">Nomor Meter</label>
+                <label for="nomor_kwh" class="block text-sm font-medium text-gray-700">Nomor Meter</label>
                 <div class="relative rounded-md shadow-sm">
-                  <input type="text" id="nomor_meter" name="nomor_KWh"
+                  <input type="text" id="nomor_kwh" name="nomor_kwh"
                     class="block w-full rounded-lg border border-gray-300 px-4 py-2.5 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                     placeholder="Contoh: 5372-8392-1234" required>
                   <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">

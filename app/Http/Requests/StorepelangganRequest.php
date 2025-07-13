@@ -24,7 +24,7 @@ class StorepelangganRequest extends FormRequest
         return [
             'username' => 'required|string|max:255|unique:pelanggans',
             'password' => 'required|string|min:8|confirmed',
-            'nomor_KWh' => 'required|string|max:255|unique:pelanggans',
+            'nomor_kwh' => 'required|integer|unique:pelanggans',
             'nama_pelanggan' => 'required|string|max:255',
             'alamat' => 'required|string|max:255',
             'id_tarif' => 'required|exists:tarifs,id',

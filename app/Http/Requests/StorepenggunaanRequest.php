@@ -11,7 +11,7 @@ class StorepenggunaanRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,11 @@ class StorepenggunaanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'id_pelanggan' => 'required|exists:pelanggans,id',
+            'bulan' => 'required|integer|min:1|max:12',
+            'tahun' => 'required|integer|min:2020|max:' . (date('Y') + 1),
+            'meter_awal' => 'required|numeric|min:0',
+            'meter_akhir' => 'required|numeric|min:0|gte:meter_awal',
         ];
     }
 }

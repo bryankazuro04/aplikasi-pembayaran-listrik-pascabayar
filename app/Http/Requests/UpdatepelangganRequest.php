@@ -23,7 +23,7 @@ class UpdatepelangganRequest extends FormRequest
     {
         return [
             'id_tarif' => 'required|exists:tarifs,id',
-            'nomor_kwh' => 'required|integer|unique:pelanggans',
+            'nomor_kwh' => 'required|integer',
             'nama_pelanggan' => 'required|string|max:255',
             'alamat' => 'required|string|max:255',
         ];

@@ -21,12 +21,17 @@ class PembayaranController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($id)
     {
-        $tagihan = Tagihan::where('status', 'belum_dibayar')
-            ->with(['pelanggan.tarif', 'penggunaan'])
-            ->get();
-        return view('pembayaran.create', compact('tagihan'));
+        $tagihan = Tagihan::with(['penggunaan', 'pelanggan.tarif'])->findOrFail($id);
+
+        $jumlah_meter = $tagihan->jumlah_meter;
+        $tarif_per_kwh = $tagihan->pelanggan->tarif->tarif_per_kwh;
+        $biaya_admin = 2500;
+
+        $total_bayar = $jumlah_meter * $tarif_per_kwh + $biaya_admin;
+
+        return view('pembayaran.create', compact('tagihan', 'total_bayar', 'biaya_admin'));
     }
 
     /**
@@ -34,40 +39,25 @@ class PembayaranController extends Controller
      */
     public function store(Request $request)
     {
-        // Get unpaid tagihan
-        $tagihan = Tagihan::where('status', 'belum_dibayar')
-                         ->with('pelanggan.tarif')
-                         ->first();
+        $tagihan = Tagihan::with('pelanggan.tarif')->findOrFail($request->id);
 
-        if (!$tagihan) {
-            return redirect()->back()->with('error', 'Tidak ada tagihan yang perlu dibayar');
-        }
+        $jumlah_meter = $tagihan->jumlah_meter;
+        $tarif_per_kwh = $tagihan->pelanggan->tarif->tarif_per_kwh;
+        $biaya_admin = $request->biaya_admin;
+        $total_bayar = $jumlah_meter * $tarif_per_kwh + $biaya_admin;
 
-        DB::beginTransaction();
-        try {
-            $biaya_admin = 2500; // Set fixed biaya_admin
-            
-            // Calculate total_bayar based on jumlah_meter × tarif_per_kwh + biaya_admin
-            $total_bayar = ($tagihan->jumlah_meter * $tagihan->pelanggan->tarif->tarif_per_kwh) + $biaya_admin;
+        Pembayaran::create([
+            'id_tagihan' => $tagihan->id,
+            'id_pelanggan' => $tagihan->id_pelanggan,
+            'biaya_admin' => $biaya_admin,
+            'total_bayar' => $total_bayar,
+            'tanggal_pembayaran' => now(),
+            'bulan_bayar' => $tagihan->bulan,
+        ]);
 
-            // Create pembayaran
-            $pembayaran = new Pembayaran();
-            $pembayaran->tagihan_id = $tagihan->id;
-            $pembayaran->tanggal_pembayaran = now();
-            $pembayaran->biaya_admin = $biaya_admin;
-            $pembayaran->total_bayar = $total_bayar;
-            $pembayaran->save();
+        $tagihan->update(['status_pembayaran' => 1]);
 
-            // Update tagihan status
-            $tagihan->status = 'sudah_dibayar';
-            $tagihan->save();
-
-            DB::commit();
-            return redirect()->route('pembayaran.index')->with('success', 'Pembayaran berhasil diproses');
-        } catch (\Exception $e) {
-            DB::rollback();
-            return back()->with('error', 'Terjadi kesalahan saat memproses pembayaran');
-        }
+        return redirect()->route('pembayaran.index')->with('success', 'Pembayaran berhasil dilakukan.');
     }
 
     /**
@@ -75,8 +65,8 @@ class PembayaranController extends Controller
      */
     public function show(string $id)
     {
-        $pembayaran = Pembayaran::with(['tagihan.pelanggan.tarif', 'tagihan.penggunaan'])->findOrFail($id);
-        return view('pelanggan.detail-pembayaran', compact('pembayaran'));
+        // $pembayaran = Pembayaran::with(['tagihan.pelanggan.tarif', 'tagihan.penggunaan'])->findOrFail($id);
+        // return view('pelanggan.detail-pembayaran', compact('pembayaran'));
     }
 
     /**

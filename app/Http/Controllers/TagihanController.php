@@ -24,9 +24,7 @@ class TagihanController extends Controller
      */
     public function create()
     {
-        $pelanggan = Pelanggan::all();
-        $penggunaan = Penggunaan::whereDoesntHave('tagihan')->get();
-        return view('admin.tagihan.create', compact('pelanggan', 'penggunaan'));
+        //
     }
 
     /**
@@ -34,25 +32,20 @@ class TagihanController extends Controller
      */
     public function store(Request $request)
     {
-        // Get penggunaan that doesn't have a tagihan yet
-        $penggunaan = Penggunaan::whereDoesntHave('tagihan')->first();
-        
-        if (!$penggunaan) {
-            return redirect()->back()->with('error', 'Tidak ada data penggunaan yang perlu dibuatkan tagihan');
-        }
+        $penggunaan = Penggunaan::findOrFail($request->id);
 
-        // Calculate jumlah_meter
         $jumlah_meter = $penggunaan->meter_akhir - $penggunaan->meter_awal;
 
-        // Create tagihan
-        $tagihan = new Tagihan();
-        $tagihan->pelanggan_id = $penggunaan->pelanggan_id;
-        $tagihan->penggunaan_id = $penggunaan->id;
-        $tagihan->jumlah_meter = $jumlah_meter;
-        $tagihan->status = 0;
-        $tagihan->save();
+        $tagihan = Tagihan::create([
+            'id_penggunaan' => $penggunaan->id,
+            'id_pelanggan' => $penggunaan->id_pelanggan,
+            'bulan' => $penggunaan->bulan,
+            'tahun' => $penggunaan->tahun,
+            'jumlah_meter' => $jumlah_meter,
+            'status_pembayaran' => 0, // Belum dibayar
+        ]);
 
-        return redirect()->route('tagihan.index')->with('success', 'Tagihan berhasil dibuat');
+        return redirect()->route('pembayaran.create', ['id' => $tagihan->id]);
     }
 
     /**
@@ -65,21 +58,12 @@ class TagihanController extends Controller
     }
 
     /**
-     * Display tagihan for specific pelanggan
-     */
-    public function tagihanPelanggan(Pelanggan $pelanggan)
-    {
-        $tagihan = $pelanggan->tagihan()->with(['penggunaan', 'pembayaran'])->get();
-        return view('tagihan.pelanggan', compact('pelanggan', 'tagihan'));
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Tagihan $tagihan)
     {
-        $tagihan->load(['pelanggan', 'penggunaan']);
-        return view('admin.tagihan.edit', compact('tagihan'));
+        // $tagihan->load(['pelanggan', 'penggunaan']);
+        // return view('admin.tagihan.edit', compact('tagihan'));
     }
 
     /**

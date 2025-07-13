@@ -111,13 +111,19 @@
                   <td class="whitespace-nowrap px-6 py-4">
                     <span
                       class="{{ $p->status != 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }} inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium">
-                      {{ ucfirst($p->tagihan[$index]->status_pembayaran) }}
+                      {{ ucfirst($p->tagihan[0]->status_pembayaran ?? 'Belum Ada Tagihan') }}
+
                     </span>
                   </td>
                   <td class="whitespace-nowrap px-6 py-4 text-sm font-medium">
                     <div class="flex space-x-2">
                       <button
-                        onclick="editPelanggan({{ $p->id }}, {{ $p->id_tarif }}, {{ $p->nomor_kwh }}, '{{ $p->nama_pelanggan }}', '{{ $p->alamat }}')"
+                        onclick="editPelanggan(this)"
+                        data-id="{{ $p->id }}"
+                        data-id_tarif="{{ $p->id_tarif }}"
+                        data-nomor_kwh="{{ $p->nomor_kwh }}"
+                        data-nama_pelanggan="{{ $p->nama_pelanggan }}"
+                        data-alamat="{{ $p->alamat }}"
                         class="inline-flex items-center rounded-md border border-transparent bg-yellow-500 px-3 py-1.5 text-xs font-medium text-white transition duration-200 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2">
                         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -173,7 +179,7 @@
           </button>
         </div>
 
-        <form id="editForm" method="POST">
+        <form id="editPelangganForm" method="POST">
           @csrf
           @method('PUT')
 
@@ -218,6 +224,7 @@
               Simpan
             </button>
           </div>
+
         </form>
       </div>
     </div>
@@ -225,8 +232,15 @@
 
   @push('scripts')
     <script>
-      function editPelanggan(id, id_tarif, nomor_kwh, nama_pelanggan, alamat) {
-        document.getElementById('editForm').action = `/pelanggan/${id}`;
+      function editPelanggan(button) {
+        const id = button.getAttribute('data-id');
+        const id_tarif = button.getAttribute('data-id_tarif');
+        const nomor_kwh = button.getAttribute('data-nomor_kwh');
+        const nama_pelanggan = button.getAttribute('data-nama_pelanggan');
+        const alamat = button.getAttribute('data-alamat');
+        
+        const form = document.getElementById('editPelangganForm');
+        form.action = `/pelanggan/${id}`;
         document.getElementById('edit_id_tarif').value = id_tarif;
         document.getElementById('edit_nomor_kwh').value = nomor_kwh;
         document.getElementById('edit_nama_pelanggan').value = nama_pelanggan;

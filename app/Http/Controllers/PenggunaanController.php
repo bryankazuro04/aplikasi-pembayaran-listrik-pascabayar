@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\penggunaan;
 use App\Http\Requests\StorepenggunaanRequest;
 use App\Http\Requests\UpdatepenggunaanRequest;
+use App\Models\pelanggan;
 
 class PenggunaanController extends Controller
 {
@@ -13,7 +14,8 @@ class PenggunaanController extends Controller
      */
     public function index()
     {
-        // 
+        $penggunaans = penggunaan::with(['pelanggan'])->get();
+        return view('admin.penggunaan.index', compact('penggunaans'));
     }
 
     /**
@@ -21,7 +23,8 @@ class PenggunaanController extends Controller
      */
     public function create()
     {
-        return view('admin.penggunaan');
+        $pelanggans = pelanggan::all();
+        return view('admin.penggunaan.create', compact('pelanggans'));
     }
 
     /**
@@ -29,7 +32,8 @@ class PenggunaanController extends Controller
      */
     public function store(StorepenggunaanRequest $request)
     {
-        //
+        penggunaan::create($request->validated());
+        return redirect()->route('penggunaan.index')->with('success', 'Penggunaan berhasil ditambahkan.');
     }
 
     /**
