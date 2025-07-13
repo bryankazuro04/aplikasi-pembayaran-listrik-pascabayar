@@ -19,6 +19,7 @@ class PelangganSeeder extends Seeder
             'password' => bcrypt('password123'), // Ganti dengan password yang sesuai
             'nomor_KWh' => '1234567890', // Ganti dengan nomor KWh yang sesuai
             'nama_pelanggan' => 'Pelanggan Satu',
+            'alamat' => 'Jl. Contoh Alamat No. 1, Kota Contoh',
         ]);
     }
 }

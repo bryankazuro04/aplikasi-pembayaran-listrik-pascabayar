@@ -43,9 +43,9 @@ class TarifController extends Controller
         try {
             DB::beginTransaction();
             
-            $tarif = tarif::create([
+            tarif::create([
                 'daya' => $request->daya,
-                'tarifperkwh' => $request->tarifperkwh,
+                'tarif_per_kwh' => $request->tarifperkwh,
                 'biaya_admin' => $request->biaya_admin
             ]);
             
@@ -78,21 +78,8 @@ class TarifController extends Controller
      */
     public function update(UpdatetarifRequest $request, tarif $tarif)
     {
-        try {
-            DB::beginTransaction();
-            
-            $tarif->update([
-                'daya' => $request->daya,
-                'tarifperkwh' => $request->tarifperkwh,
-                'biaya_admin' => $request->biaya_admin
-            ]);
-            
-            DB::commit();
-            return redirect()->route('tarif.index')->with('success', 'Tarif berhasil diperbarui');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return redirect()->route('tarif.index')->with('error', 'Gagal memperbarui tarif');
-        }
+        $tarif::where('id', $tarif->id)->update($request->validated());
+        return redirect()->route('tarif.index')->with('success', 'Tarif berhasil diperbarui');
     }
 
     /**

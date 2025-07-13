@@ -16,8 +16,8 @@ class TagihanSeeder extends Seeder
         tagihan::create([
             'id_penggunaan' => 1, // Pastikan ID penggunaan ini sesuai dengan yang ada di database
             'id_pelanggan' => 1, // Pastikan ID pelanggan ini sesuai dengan yang ada di database
-            'bulan' => 1,
-            'tahun' => 2023,
+            'bulan' => 7,
+            'tahun' => 2025,
             'jumlah_meter' => 100,
             'status_pembayaran' => false,
         ]);

@@ -11,7 +11,7 @@ class UpdatetarifRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,8 @@ class UpdatetarifRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'daya' => 'required|numeric',
+            'tarif_per_kwh' => 'required|numeric',
         ];
     }
 }

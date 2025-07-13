@@ -41,10 +41,10 @@ return [
             'provider' => 'users',
         ],
 
-        // 'pelanggan' => [
-        //     'driver' => 'session',
-        //     'provider' => 'pelanggans',
-        // ],
+        'pelanggan' => [
+            'driver' => 'session',
+            'provider' => 'pelanggans',
+        ],
     ],
 
     /*
@@ -70,10 +70,10 @@ return [
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
 
-        // 'pelanggans' => [
-        //     'driver' => 'eloquent',
-        //     'model' => env('AUTH_PELANGGAN_MODEL', App\Models\pelanggan::class),
-        // ],
+        'pelanggans' => [
+            'driver' => 'eloquent',
+            'model' => env('AUTH_PELANGGAN_MODEL', App\Models\pelanggan::class),
+        ],
     ],
 
     /*

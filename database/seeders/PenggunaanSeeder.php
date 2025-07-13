@@ -15,8 +15,8 @@ class PenggunaanSeeder extends Seeder
     {
         penggunaan::create([
             'id_pelanggan' => 1, // Pastikan ID pelanggan ini sesuai dengan yang ada di database
-            'bulan' => 1,
-            'tahun' => 2023,
+            'bulan' => 7,
+            'tahun' => 2025,
             'meter_awal' => 100,
             'meter_akhir' => 200,
         ]);

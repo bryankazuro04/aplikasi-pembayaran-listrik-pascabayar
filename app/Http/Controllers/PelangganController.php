@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\pelanggan;
 use App\Http\Requests\StorepelangganRequest;
 use App\Http\Requests\UpdatepelangganRequest;
+use App\Models\tagihan;
 
 class PelangganController extends Controller
 {
@@ -13,7 +14,11 @@ class PelangganController extends Controller
      */
     public function index()
     {
-        return view('pelanggan.index');
+        // $pelanggan = auth()->guard('pelanggan')->user()->load(['penggunaan', 'tarif', 'tagihan', 'pembayaran']);
+        // return view('pelanggan.index', compact('pelanggan'));
+        $pelanggan = pelanggan::with(['tarif', 'tagihan', 'pembayaran'])->get();
+        $tarifs = \App\Models\tarif::all();
+        return view('admin.pelanggan', compact('pelanggan', 'tarifs'));
     }
 
     /**
@@ -21,7 +26,8 @@ class PelangganController extends Controller
      */
     public function create()
     {
-        return view('pelanggan.create');
+        $tarif = \App\Models\tarif::all();
+        return view('pelanggan.create', compact('tarif'));
     }
 
     /**
@@ -29,15 +35,19 @@ class PelangganController extends Controller
      */
     public function store(StorepelangganRequest $request)
     {
-        //
+        $request->merge([
+            'password' => bcrypt($request->password),
+        ]);
+        pelanggan::create($request);
+        return redirect()->route('dashboard');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(pelanggan $pelanggan)
+    public function show()
     {
-        //
+        // 
     }
 
     /**
@@ -45,7 +55,8 @@ class PelangganController extends Controller
      */
     public function edit(pelanggan $pelanggan)
     {
-        //
+        $tarif = \App\Models\tarif::all();
+        return view('pelanggan.edit', compact('pelanggan', 'tarif'));
     }
 
     /**
@@ -53,7 +64,8 @@ class PelangganController extends Controller
      */
     public function update(UpdatepelangganRequest $request, pelanggan $pelanggan)
     {
-        //
+        $pelanggan::where('id', $pelanggan->id)->update($request->validated());
+        return redirect()->route('pelanggan.index')->with('success', 'Pelanggan berhasil diperbarui');
     }
 
     /**
@@ -61,6 +73,7 @@ class PelangganController extends Controller
      */
     public function destroy(pelanggan $pelanggan)
     {
-        //
+        pelanggan::destroy($pelanggan->id);
+        return redirect()->route('pelanggan.index')->with('success', 'Pelanggan berhasil dihapus');
     }
 }

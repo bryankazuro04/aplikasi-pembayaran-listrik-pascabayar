@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class penggunaan extends Model
 {
@@ -16,6 +17,11 @@ class penggunaan extends Model
 
     public function pelanggan() : BelongsTo
     {
-        return $this->belongsTo(Pelanggan::class, 'id_pelanggan');
+        return $this->belongsTo(pelanggan::class, 'id_pelanggan', 'id');
+    }
+
+    public function tagihan() : HasOne
+    {
+        return $this->hasOne(tagihan::class, 'id_penggunaan');
     }
 }

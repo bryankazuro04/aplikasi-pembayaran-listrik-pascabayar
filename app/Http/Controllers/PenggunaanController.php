@@ -13,7 +13,7 @@ class PenggunaanController extends Controller
      */
     public function index()
     {
-        //
+        // 
     }
 
     /**
@@ -21,7 +21,7 @@ class PenggunaanController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.penggunaan');
     }
 
     /**

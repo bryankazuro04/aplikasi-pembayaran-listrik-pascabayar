@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class tagihan extends Model
 {
@@ -16,11 +17,16 @@ class tagihan extends Model
 
     public function pelanggan() : BelongsTo
     {
-        return $this->belongsTo(Pelanggan::class, 'id_pelanggan');
+        return $this->belongsTo(Pelanggan::class);
     }
 
     public function penggunaan() : BelongsTo
     {
-        return $this->belongsTo(Penggunaan::class, 'id_penggunaan');
+        return $this->belongsTo(Penggunaan::class);
+    }
+
+    public function pembayaran() : HasOne
+    {
+        return $this->hasOne(Pembayaran::class, 'id_tagihan', 'id');
     }
 }

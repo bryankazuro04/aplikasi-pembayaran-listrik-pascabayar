@@ -11,7 +11,7 @@ class UpdatepelangganRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,10 @@ class UpdatepelangganRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'id_tarif' => 'required|exists:tarifs,id',
+            'nomor_kwh' => 'required|integer|unique:pelanggans',
+            'nama_pelanggan' => 'required|string|max:255',
+            'alamat' => 'required|string|max:255',
         ];
     }
 }

@@ -15,13 +15,17 @@ Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'authenticate'])->name('login.authenticate');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
-    Route::resources([
-        'pelanggan' => PelangganController::class,
-        'tagihan' => TagihanController::class, 
-        'pembayaran' => PembayaranController::class, 
-        'penggunaan' => PenggunaanController::class, 
-        'tarif' => TarifController::class
-    ]);
-});
+Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+Route::resources([
+    'pelanggan' => PelangganController::class,
+    'tagihan' => TagihanController::class, 
+    'pembayaran' => PembayaranController::class, 
+    'penggunaan' => PenggunaanController::class, 
+    'tarif' => TarifController::class
+]);
+// Route::middleware(['auth'])->group(function () {
+// });
+
+// Route::middleware(['auth:pelanggan'])->group(function () {
+// });
+Route::resource('pelanggan', PelangganController::class);

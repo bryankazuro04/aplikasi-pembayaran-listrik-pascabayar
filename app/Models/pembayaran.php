@@ -16,16 +16,16 @@ class pembayaran extends Model
 
     public function tagihan() : BelongsTo
     {
-        return $this->belongsTo(Tagihan::class, 'id_tagihan');
+        return $this->belongsTo(tagihan::class);
     }
 
     public function pelanggan() : BelongsTo
     {
-        return $this->belongsTo(Pelanggan::class, 'id_pelanggan');
+        return $this->belongsTo(pelanggan::class);
     }
 
     public function user() : BelongsTo
     {
-        return $this->belongsTo(User::class, 'id_user');
+        return $this->belongsTo(User::class);
     }
 }

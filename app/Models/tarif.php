@@ -12,7 +12,7 @@ class tarif extends Model
     use HasFactory;
 
     protected $table = 'tarifs';
-    protected $fillable = ['daya', 'tarif_per_kWh'];
+    protected $fillable = ['daya', 'tarif_per_kwh'];
 
     public function pelanggan(): HasMany
     {

@@ -16,8 +16,9 @@ return new class extends Migration {
             $table->foreign('id_tarif')->references('id')->on('tarifs')->onDelete('cascade');
             $table->string('username')->unique();
             $table->string('password');
-            $table->integer('nomor_KWh');
+            $table->integer('nomor_kwh');
             $table->string('nama_pelanggan');
+            $table->string('alamat')->nullable();
             $table->timestamps();
         });
     }
