@@ -16,15 +16,54 @@ class TagihanController extends Controller
     public function index()
     {
         $tagihan = Tagihan::with(['pelanggan', 'penggunaan'])->get();
-        return view('admin.tagihan.index', compact('tagihan'));
+        return view('pelanggan.tagihan', compact('tagihan'));
     }
 
     /**
      * Show the form for creating a new resource.
+     * Langsung membuat tagihan berdasarkan penggunaan_id
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $penggunaan_id = $request->get('penggunaan_id');
+        
+        if (!$penggunaan_id) {
+            return redirect()->back()->with('error', 'ID Penggunaan tidak ditemukan');
+        }
+
+        $penggunaan = Penggunaan::with(['pelanggan.tarif'])->findOrFail($penggunaan_id);
+        
+        // Check if tagihan already exists for this penggunaan
+        $existingTagihan = Tagihan::where('id_penggunaan', $penggunaan_id)->first();
+        if ($existingTagihan) {
+            return redirect()->route('tagihan.show', $existingTagihan->id)
+                ->with('info', 'Tagihan untuk periode ini sudah dibuat sebelumnya');
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $jumlah_meter = $penggunaan->meter_akhir - $penggunaan->meter_awal;
+
+            $tagihan = Tagihan::create([
+                'id_penggunaan' => $penggunaan->id,
+                'id_pelanggan' => $penggunaan->id_pelanggan,
+                'bulan' => $penggunaan->bulan,
+                'tahun' => $penggunaan->tahun,
+                'jumlah_meter' => $jumlah_meter,
+                'status_pembayaran' => 0, // Belum dibayar
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('tagihan.show', $tagihan->id)
+                ->with('success', 'Tagihan berhasil dibuat');
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()
+                ->with('error', 'Terjadi kesalahan saat membuat tagihan: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -32,29 +71,18 @@ class TagihanController extends Controller
      */
     public function store(Request $request)
     {
-        $penggunaan = Penggunaan::findOrFail($request->id);
-
-        $jumlah_meter = $penggunaan->meter_akhir - $penggunaan->meter_awal;
-
-        $tagihan = Tagihan::create([
-            'id_penggunaan' => $penggunaan->id,
-            'id_pelanggan' => $penggunaan->id_pelanggan,
-            'bulan' => $penggunaan->bulan,
-            'tahun' => $penggunaan->tahun,
-            'jumlah_meter' => $jumlah_meter,
-            'status_pembayaran' => 0, // Belum dibayar
-        ]);
-
-        return redirect()->route('pembayaran.create', ['id' => $tagihan->id]);
+        // Method ini tidak digunakan karena create langsung membuat tagihan
+        return redirect()->back()->with('error', 'Method tidak diizinkan');
     }
 
     /**
      * Display the specified resource.
+     * Menampilkan tagihan sebagai acuan pembayaran
      */
     public function show(Tagihan $tagihan)
     {
         $tagihan->load(['pelanggan.tarif', 'penggunaan', 'pembayaran']);
-        return view('admin.tagihan.show', compact('tagihan'));
+        return view('pelanggan.tagihan.show', compact('tagihan'));
     }
 
     /**
