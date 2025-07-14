@@ -90,8 +90,7 @@ class TagihanController extends Controller
      */
     public function edit(Tagihan $tagihan)
     {
-        // $tagihan->load(['pelanggan', 'penggunaan']);
-        // return view('admin.tagihan.edit', compact('tagihan'));
+        // 
     }
 
     /**

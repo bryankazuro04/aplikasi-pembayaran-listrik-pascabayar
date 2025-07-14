@@ -46,7 +46,7 @@
                         </div>
                     </div>
 
-                    <div>
+                <div>
                         <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
                         <div class="mt-1 relative">
                             <input id="password" name="password" type="password" required 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Tagihan;
 use App\Models\Pembayaran;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class PembayaranController extends Controller
@@ -21,9 +22,9 @@ class PembayaranController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create($id)
+    public function create()
     {
-        // 
+        //
     }
 
     /**
@@ -45,12 +46,15 @@ class PembayaranController extends Controller
             'bulan' => now()->month,
             'biaya_admin' => $biaya_admin,
             'total_bayar' => $total_bayar,
-            
         ]);
 
         $tagihan->update(['status_pembayaran' => 1]);
 
-        return redirect()->route('tagihan.index')->with('success', 'Pembayaran berhasil dilakukan.');
+        return redirect()->route('pelanggan.home')->with('success', 'Pembayaran berhasil dilakukan.');
+        // if(Auth::guard('pelanggan')->check()) {
+        // } else if (Auth::guard('web')->check()) {
+        //     return redirect()->route('tagihan.index')->with('success', 'Pembayaran berhasil dilakukan.');
+        // }
     }
 
     /**

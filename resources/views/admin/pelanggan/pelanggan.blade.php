@@ -7,7 +7,7 @@
       <div class="mb-8">
         <div class="md:flex md:items-center md:justify-between">
           <div class="min-w-0 flex-1">
-            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl">
+            <h2 class="text-2xl font-bold text-gray-900 sm:text-3xl">
               Data Pelanggan
             </h2>
             <p class="mt-1 text-sm text-gray-500">
@@ -25,41 +25,6 @@
           </div>
         </div>
       </div>
-
-      <!-- Success/Error Messages -->
-      @if (session('success'))
-        <div class="mb-6 rounded-md border border-green-200 bg-green-50 p-4">
-          <div class="flex">
-            <div class="flex-shrink-0">
-              <svg class="h-5 w-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clip-rule="evenodd" />
-              </svg>
-            </div>
-            <div class="ml-3">
-              <p class="text-sm font-medium text-green-800">{{ session('success') }}</p>
-            </div>
-          </div>
-        </div>
-      @endif
-
-      @if (session('error'))
-        <div class="mb-6 rounded-md border border-red-200 bg-red-50 p-4">
-          <div class="flex">
-            <div class="flex-shrink-0">
-              <svg class="h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                  clip-rule="evenodd" />
-              </svg>
-            </div>
-            <div class="ml-3">
-              <p class="text-sm font-medium text-red-800">{{ session('error') }}</p>
-            </div>
-          </div>
-        </div>
-      @endif
 
       <!-- Table Card -->
       <div class="overflow-hidden rounded-lg bg-white shadow-xl">
@@ -110,13 +75,13 @@
                   </td>
                   <td class="whitespace-nowrap px-6 py-4">
                     <span
-                      class="{{ $p->status != 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }} inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium">
-                      {{ ucfirst($p->tagihan[0]->status_pembayaran ?? 'Belum Ada Tagihan') }}
+                      class="{{ $p->status != 1 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }} inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium">
+                      {{ ucfirst($p->tagihan[0]->status ?? 'Belum Ada Tagihan') }}
 
                     </span>
                   </td>
                   <td class="whitespace-nowrap px-6 py-4 text-sm font-medium">
-                    <div class="flex space-x-2">
+                    <div class="flex space-x-3">
                       <button
                         onclick="editPelanggan(this)"
                         data-id="{{ $p->id }}"
@@ -124,8 +89,8 @@
                         data-nomor_kwh="{{ $p->nomor_kwh }}"
                         data-nama_pelanggan="{{ $p->nama_pelanggan }}"
                         data-alamat="{{ $p->alamat }}"
-                        class="inline-flex items-center rounded-md border border-transparent bg-yellow-500 px-3 py-1.5 text-xs font-medium text-white transition duration-200 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2">
-                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        class="text-yellow-500">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                         </svg>
@@ -135,8 +100,8 @@
                         @csrf
                         @method('DELETE')
                         <button type="submit"
-                          class="inline-flex items-center rounded-md border border-transparent bg-red-500 px-3 py-1.5 text-xs font-medium text-white transition duration-200 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
-                          <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          class="text-red-500">
+                          <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                           </svg>

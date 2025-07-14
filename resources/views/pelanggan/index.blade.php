@@ -1,10 +1,8 @@
 @extends('layouts.app')
 
 @section('main')
-  {{-- @dd($pelanggan->toArray()) --}}
-  {{-- @dd($pelanggan->tagihan->last()->jumlah_meter) --}}
-
   <div class="w-full p-4 sm:p-6">
+
     <!-- Informasi Pelanggan -->
     <div class="mb-6 rounded-lg bg-white p-6 shadow-lg">
       <div class="mb-6 flex flex-col items-start justify-between sm:flex-row sm:items-center">
@@ -14,7 +12,7 @@
         </div>
         <div class="mt-4 text-right sm:mt-0">
           <p class="text-sm text-gray-600">No. Meter:</p>
-          <p class="text-lg font-semibold text-gray-800">{{ $pelanggan->nomor_KWh ?? '-' }}</p>
+          <p class="text-lg font-semibold text-gray-800">{{ $pelanggan->nomor_kwh ?? '-' }}</p>
         </div>
       </div>
 
@@ -30,7 +28,7 @@
         <div class="rounded-lg bg-gray-50 p-4">
           <h3 class="text-sm font-medium text-gray-600">Tarif per kWh</h3>
           <p class="mt-1 text-lg font-semibold text-gray-800">Rp
-            {{ number_format($pelanggan->tarif->tarif_per_kWh ?? 0, 0, ',', '.') }}</p>
+            {{ number_format($pelanggan->tarif->tarif_per_kwh ?? 0, 0, ',', '.') }}</p>
         </div>
         <div class="rounded-lg bg-gray-50 p-4">
           <h3 class="text-sm font-medium text-gray-600">Alamat</h3>
@@ -116,10 +114,10 @@
                           $total_tagihan += $t->tagihan->pembayaran->biaya_admin;
                       }
                     @endphp
-                    Rp {{ number_format($total_tagihan, 0, ',', '.') }}
+                    Rp {{ number_format($t->tagihan->pembayaran->total_bayar, 0, ',', '.') }}
                   </td>
                   <td class="whitespace-nowrap px-4 py-3">
-                    @if ($t->status === 'sudah_dibayar')
+                    @if ($t->tagihan->status_pembayaran === 1)
                       <span
                         class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">
                         <svg class="mr-1.5 h-2 w-2 text-green-400" fill="currentColor" viewBox="0 0 8 8">

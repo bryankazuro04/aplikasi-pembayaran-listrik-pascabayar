@@ -25,7 +25,7 @@ class LoginController extends Controller
 
         if(Auth::guard('pelanggan')->attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->route('tagihan.index');
+            return redirect()->route('pelanggan.home');
         }
 
         return back()->withErrors([
