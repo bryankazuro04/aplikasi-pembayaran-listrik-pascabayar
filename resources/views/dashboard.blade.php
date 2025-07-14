@@ -97,10 +97,20 @@
               <tr>
                 <td class="whitespace-nowrap px-6 py-4">{{ $tagihan->pelanggan->nomor_kwh }}</td>
                 <td class="whitespace-nowrap px-6 py-4">{{ $tagihan->pelanggan->nama_pelanggan }}</td>
-                <td class="whitespace-nowrap px-6 py-4">{{ \Carbon\Carbon::create($tagihan->tahun, $tagihan->bulan)->locale('id')->translatedFormat('F Y') }}</td>
+                <td class="whitespace-nowrap px-6 py-4">
+                  {{ \Carbon\Carbon::create($tagihan->tahun, $tagihan->bulan)->locale('id')->translatedFormat('F Y') }}
+                </td>
                 <td class="whitespace-nowrap px-6 py-4">
                   {{ number_format($tagihan->penggunaan->meter_akhir - $tagihan->penggunaan->meter_awal) }} kWh</td>
-                <td class="whitespace-nowrap px-6 py-4">Rp {{ number_format($tagihan->pembayaran->total_bayar, 0, ',', '.') }}</td>
+
+                @php
+                  $totalTagihan = $tagihan->penggunaan->meter_akhir - $tagihan->penggunaan->meter_awal;
+                  $tarifPerKwh = $tagihan->pelanggan->tarif->tarif_per_kwh ?? 0;
+                  $biayaAdmin = 2500;
+                  $totalTagihan = $totalTagihan * $tarifPerKwh + $biayaAdmin;
+                @endphp
+
+                <td class="whitespace-nowrap px-6 py-4">Rp {{ number_format($totalTagihan, 0, ',', '.') }}</td>
                 <td class="whitespace-nowrap px-6 py-4">
                   @if ($tagihan->status_pembayaran)
                     <span class="rounded-full bg-green-100 px-2 py-1 text-xs font-semibold text-green-700">Lunas</span>

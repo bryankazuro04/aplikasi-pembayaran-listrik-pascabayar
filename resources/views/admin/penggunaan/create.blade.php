@@ -83,7 +83,7 @@
             <div class="grid grid-cols-2 gap-6">
               <div class="space-y-2">
                 <label for="meter_awal" class="block text-sm font-medium text-gray-600">Meter Awal</label>
-                <input type="number" name="meter_awal" id="meter_awal"
+                <input type="number" name="meter_awal" id="meter_awal" step="0.01"
                   class="w-full rounded-lg border-0 bg-gray-50 px-4 py-3 transition-all focus:bg-white focus:outline-none focus:ring-1 focus:ring-gray-300"
                   value="{{ old('meter_awal') }}" min="0" step="0.01" placeholder="kWh" required>
 
@@ -94,7 +94,7 @@
 
               <div class="space-y-2">
                 <label for="meter_akhir" class="block text-sm font-medium text-gray-600">Meter Akhir</label>
-                <input type="number" name="meter_akhir" id="meter_akhir"
+                <input type="number" name="meter_akhir" id="meter_akhir" step="0.01"
                   class="w-full rounded-lg border-0 bg-gray-50 px-4 py-3 transition-all focus:bg-white focus:outline-none focus:ring-1 focus:ring-gray-300"
                   value="{{ old('meter_akhir') }}" min="0" step="0.01" placeholder="kWh" required>
 

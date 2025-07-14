@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->foreign('id_pelanggan')->references('id')->on('pelanggans')->onDelete('cascade');
             $table->unsignedTinyInteger('bulan');
             $table->unsignedSmallInteger('tahun');
-            $table->unsignedInteger('jumlah_meter');
+            $table->decimal('jumlah_meter', 7, 0);
             $table->boolean('status_pembayaran')->default(false);
             $table->timestamps();
         });

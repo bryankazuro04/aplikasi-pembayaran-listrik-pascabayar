@@ -49,8 +49,6 @@
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                   Tarif</th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                  Status</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                   Aksi</th>
               </tr>
             </thead>
@@ -71,13 +69,6 @@
                     <span
                       class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">
                       {{ $p->tarif->daya ?? '-' }} VA
-                    </span>
-                  </td>
-                  <td class="whitespace-nowrap px-6 py-4">
-                    <span
-                      class="{{ $p->status != 1 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }} inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium">
-                      {{ ucfirst($p->tagihan[0]->status ?? 'Belum Ada Tagihan') }}
-
                     </span>
                   </td>
                   <td class="whitespace-nowrap px-6 py-4 text-sm font-medium">
