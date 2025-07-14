@@ -23,15 +23,7 @@ class PembayaranController extends Controller
      */
     public function create($id)
     {
-        $tagihan = Tagihan::with(['penggunaan', 'pelanggan.tarif'])->findOrFail($id);
-
-        $jumlah_meter = $tagihan->jumlah_meter;
-        $tarif_per_kwh = $tagihan->pelanggan->tarif->tarif_per_kwh;
-        $biaya_admin = 2500;
-
-        $total_bayar = $jumlah_meter * $tarif_per_kwh + $biaya_admin;
-
-        return view('pembayaran.create', compact('tagihan', 'total_bayar', 'biaya_admin'));
+        // 
     }
 
     /**
@@ -49,15 +41,16 @@ class PembayaranController extends Controller
         Pembayaran::create([
             'id_tagihan' => $tagihan->id,
             'id_pelanggan' => $tagihan->id_pelanggan,
+            'tanggal_pembayaran' => now(),
+            'bulan' => now()->month,
             'biaya_admin' => $biaya_admin,
             'total_bayar' => $total_bayar,
-            'tanggal_pembayaran' => now(),
-            'bulan_bayar' => $tagihan->bulan,
+            
         ]);
 
         $tagihan->update(['status_pembayaran' => 1]);
 
-        return redirect()->route('pembayaran.index')->with('success', 'Pembayaran berhasil dilakukan.');
+        return redirect()->route('tagihan.index')->with('success', 'Pembayaran berhasil dilakukan.');
     }
 
     /**
@@ -65,8 +58,15 @@ class PembayaranController extends Controller
      */
     public function show(string $id)
     {
-        // $pembayaran = Pembayaran::with(['tagihan.pelanggan.tarif', 'tagihan.penggunaan'])->findOrFail($id);
-        // return view('pelanggan.detail-pembayaran', compact('pembayaran'));
+        $tagihan = Tagihan::with(['penggunaan', 'pelanggan.tarif'])->findOrFail($id);
+
+        $jumlah_meter = $tagihan->jumlah_meter;
+        $tarif_per_kwh = $tagihan->pelanggan->tarif->tarif_per_kwh;
+        $biaya_admin = 2500;
+
+        $total_bayar = $jumlah_meter * $tarif_per_kwh + $biaya_admin;
+
+        return view('pelanggan.pembayaran', compact('tagihan', 'total_bayar', 'biaya_admin'));
     }
 
     /**

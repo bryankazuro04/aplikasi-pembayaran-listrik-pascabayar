@@ -56,7 +56,7 @@ class TagihanController extends Controller
 
             DB::commit();
 
-            return redirect()->route('tagihan.show', $tagihan->id)
+            return redirect()->route('tagihan.index', $tagihan->id)
                 ->with('success', 'Tagihan berhasil dibuat');
 
         } catch (\Exception $e) {

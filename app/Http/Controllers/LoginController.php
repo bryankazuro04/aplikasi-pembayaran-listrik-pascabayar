@@ -18,17 +18,14 @@ class LoginController extends Controller
     {
         $credentials = $request->only('username', 'password');
 
-        if (Auth::attempt($credentials)) {
+        if(Auth::guard('web')->attempt($credentials)) {
             $request->session()->regenerate();
             return redirect()->intended('dashboard');
         }
 
-        $pelanggan = pelanggan::where('username', $request->username)->first();
-
-        if($pelanggan && Hash::check($credentials['password'], $pelanggan->password)) {
-            Auth::guard('pelanggan')->login($pelanggan);
+        if(Auth::guard('pelanggan')->attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended(('dashboard'));
+            return redirect()->route('tagihan.index');
         }
 
         return back()->withErrors([
@@ -38,7 +35,12 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
-        Auth::logout();
+        if(Auth::guard('web')->check()) {
+            Auth::guard('web')->logout();
+        } else if(Auth::guard('pelanggan')->check()) {
+            Auth::guard('pelanggan')->logout();
+        }
+        
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/login');

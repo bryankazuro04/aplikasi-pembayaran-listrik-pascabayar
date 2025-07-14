@@ -4,7 +4,7 @@
   <div class="p-6">
     <h1 class="mb-6 text-2xl font-bold text-gray-800">Dashboard Admin</h1>
 
-    <div class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
       <div class="rounded-lg bg-blue-500 p-4 text-white shadow-lg">
         <h3 class="mb-2 text-lg font-semibold">Total Pelanggan</h3>
         <p class="text-3xl font-bold">{{ number_format($totalPelanggan ?? 0) }}</p>
@@ -18,11 +18,6 @@
       <div class="rounded-lg bg-yellow-500 p-4 text-white shadow-lg">
         <h3 class="mb-2 text-lg font-semibold">Tagihan Belum Lunas</h3>
         <p class="text-3xl font-bold">{{ number_format($tagihanBelumLunas ?? 0) }}</p>
-      </div>
-
-      <div class="rounded-lg bg-purple-500 p-4 text-white shadow-lg">
-        <h3 class="mb-2 text-lg font-semibold">Total Penggunaan (kWh)</h3>
-        <p class="text-3xl font-bold">{{ number_format($totalPenggunaan ?? 0) }}</p>
       </div>
     </div>
 
@@ -100,12 +95,12 @@
           <tbody class="divide-y divide-gray-200 bg-white">
             @forelse($tagihanTerbaru ?? [] as $tagihan)
               <tr>
-                <td class="whitespace-nowrap px-6 py-4">{{ $tagihan->pelanggan->id }}</td>
-                <td class="whitespace-nowrap px-6 py-4">{{ $tagihan->pelanggan->nama }}</td>
+                <td class="whitespace-nowrap px-6 py-4">{{ $tagihan->pelanggan->nomor_kwh }}</td>
+                <td class="whitespace-nowrap px-6 py-4">{{ $tagihan->pelanggan->nama_pelanggan }}</td>
                 <td class="whitespace-nowrap px-6 py-4">{{ $tagihan->bulan }} {{ $tagihan->tahun }}</td>
                 <td class="whitespace-nowrap px-6 py-4">
                   {{ number_format($tagihan->penggunaan->meter_akhir - $tagihan->penggunaan->meter_awal) }} kWh</td>
-                <td class="whitespace-nowrap px-6 py-4">Rp {{ number_format($tagihan->jumlah_tagihan, 0, ',', '.') }}</td>
+                <td class="whitespace-nowrap px-6 py-4">Rp {{ number_format($tagihan->pembayaran->total_bayar, 0, ',', '.') }}</td>
                 <td class="whitespace-nowrap px-6 py-4">
                   @if ($tagihan->status_pembayaran)
                     <span class="rounded-full bg-green-100 px-2 py-1 text-xs font-semibold text-green-700">Lunas</span>
