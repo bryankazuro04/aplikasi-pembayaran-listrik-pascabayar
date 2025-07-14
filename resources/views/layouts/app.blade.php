@@ -11,10 +11,10 @@
   </head>
 
   <body class="font-inter h-full antialiased">
-    <div class="min-h-screen bg-gray-50">
+    <div class="min-h-screen bg-gray-50 flex flex-col">
       @include('components.navbar')
 
-      <main class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+      <main class="container mx-auto px-4 py-6 sm:px-6 lg:px-8 flex-1">
         @include('components.alerts')
 
         @yield('main')

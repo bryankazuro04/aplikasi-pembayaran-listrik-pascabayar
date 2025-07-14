@@ -41,6 +41,7 @@ class pelanggan extends Authenticatable
     {
         return self::where('nomor_kwh', 'LIKE', "%{$query}%")
             ->orWhere('nama_pelanggan', 'LIKE', "%{$query}%")
+            ->select('id', 'nomor_kwh', 'nama_pelanggan')
             ->limit(10)
             ->get();
     }

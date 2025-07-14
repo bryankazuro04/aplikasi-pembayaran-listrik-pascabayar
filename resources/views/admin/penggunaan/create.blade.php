@@ -15,23 +15,29 @@
             @csrf
 
             <!-- Pelanggan -->
-            <div class="relative space-y-2">
-              <label for="id_pelanggan" class="block text-sm font-medium text-gray-600">Pilih Pelanggan</label>
+            <div class="space-y-2 relative">
+              <label for="nomor_kwh_search" class="block text-sm font-medium text-gray-600">Cari Nomor KWH</label>
+              <input type="search" 
+                     id="nomor_kwh_search" 
+                     name="nomor_kwh_search"
+                     class="w-full rounded-lg border-0 bg-gray-50 px-4 py-3 transition-all focus:bg-white focus:outline-none focus:ring-1 focus:ring-gray-300"
+                     placeholder="Ketik nomor KWH atau nama pelanggan..." 
+                     autocomplete="off" 
+                     required>
 
-              <select id="id_pelanggan" name="id_pelanggan"
-                class="w-full rounded-lg border-0 bg-gray-50 px-4 py-3 transition-all focus:bg-white focus:outline-none focus:ring-1 focus:ring-gray-300"
-                required>
-                <option value="">-- Pilih Pelanggan --</option>
-                @foreach ($pelanggans as $pelanggan)
-                  <option value="{{ $pelanggan->id }}" {{ old('id_pelanggan') == $pelanggan->id ? 'selected' : '' }}>
-                    {{ $pelanggan->nomor_kwh }} - {{ $pelanggan->nama_pelanggan }}
-                  </option>
-                @endforeach
-              </select>
-              
+              <ul id="autocomplete-results" class="absolute z-10 mt-1 hidden w-full border bg-white rounded-lg shadow-lg max-h-60 overflow-y-auto"></ul>
+
+              <input type="hidden" name="id_pelanggan" id="id_pelanggan" required>
+
               @error('id_pelanggan')
                 <p class="text-sm text-red-600">{{ $message }}</p>
               @enderror
+              
+              <!-- Display selected customer info -->
+              <div id="selected-customer" class="hidden mt-2 p-3 bg-blue-50 rounded-lg">
+                <span class="text-sm text-blue-800">Pelanggan terpilih: </span>
+                <span id="selected-info" class="text-sm font-medium text-blue-900"></span>
+              </div>
             </div>
 
             <!-- Periode -->
@@ -55,22 +61,22 @@
                   <option value="11" {{ old('bulan') == 11 ? 'selected' : '' }}>November</option>
                   <option value="12" {{ old('bulan') == 12 ? 'selected' : '' }}>Desember</option>
                 </select>
-                
-                @error('bulan')
+              </div>
+
+              @error('bulan')
                   <p class="text-sm text-red-600">{{ $message }}</p>
                 @enderror
-              </div>
 
               <div class="space-y-2">
                 <label for="tahun" class="block text-sm font-medium text-gray-600">Tahun</label>
                 <input type="number" name="tahun" id="tahun"
                   class="w-full rounded-lg border-0 bg-gray-50 px-4 py-3 transition-all focus:bg-white focus:outline-none focus:ring-1 focus:ring-gray-300"
                   value="{{ old('tahun', date('Y')) }}" min="2020" max="{{ date('Y') + 1 }}" required>
-                
-                @error('tahun')
+              </div>
+
+               @error('tahun')
                   <p class="text-sm text-red-600">{{ $message }}</p>
                 @enderror
-              </div>
             </div>
 
             <!-- Meter Reading -->
@@ -80,8 +86,8 @@
                 <input type="number" name="meter_awal" id="meter_awal"
                   class="w-full rounded-lg border-0 bg-gray-50 px-4 py-3 transition-all focus:bg-white focus:outline-none focus:ring-1 focus:ring-gray-300"
                   value="{{ old('meter_awal') }}" min="0" step="0.01" placeholder="kWh" required>
-                
-                @error('meter_awal')
+
+                  @error('meter_awal')
                   <p class="text-sm text-red-600">{{ $message }}</p>
                 @enderror
               </div>
@@ -91,8 +97,8 @@
                 <input type="number" name="meter_akhir" id="meter_akhir"
                   class="w-full rounded-lg border-0 bg-gray-50 px-4 py-3 transition-all focus:bg-white focus:outline-none focus:ring-1 focus:ring-gray-300"
                   value="{{ old('meter_akhir') }}" min="0" step="0.01" placeholder="kWh" required>
-                
-                @error('meter_akhir')
+
+                  @error('meter_akhir')
                   <p class="text-sm text-red-600">{{ $message }}</p>
                 @enderror
               </div>
@@ -115,4 +121,113 @@
     </div>
   </div>
 
+  @push('scripts')
+    <script>
+      const searchInput = document.getElementById("nomor_kwh_search");
+      const resultBox = document.getElementById("autocomplete-results");
+      const idInput = document.getElementById("id_pelanggan");
+      const selectedCustomer = document.getElementById("selected-customer");
+      const selectedInfo = document.getElementById("selected-info");
+      
+      let searchTimeout;
+
+      searchInput.addEventListener("input", function() {
+        const query = this.value.trim();
+
+        // Clear previous timeout
+        clearTimeout(searchTimeout);
+
+        // Hide results if query is too short
+        if (query.length < 2) {
+          resultBox.innerHTML = "";
+          resultBox.classList.add("hidden");
+          clearSelectedCustomer();
+          return;
+        }
+
+        // Add loading indicator
+        resultBox.innerHTML = '<li class="px-4 py-2 text-gray-500">Mencari...</li>';
+        resultBox.classList.remove("hidden");
+
+        // Debounce search
+        searchTimeout = setTimeout(() => {
+          fetch(`/pelanggan/search?q=${encodeURIComponent(query)}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest',
+              'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+            }
+          })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then(data => {
+            console.log('Search results:', data); // Debug log
+            
+            resultBox.innerHTML = "";
+            
+            if (data.length === 0) {
+              resultBox.innerHTML = '<li class="px-4 py-2 text-gray-500">Tidak ada data ditemukan</li>';
+              setTimeout(() => {
+                resultBox.classList.add("hidden");
+              }, 2000);
+              return;
+            }
+
+            data.forEach(item => {
+              const li = document.createElement("li");
+              li.textContent = `${item.nomor_kwh} - ${item.nama_pelanggan}`;
+              li.className = "px-4 py-2 hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-b-0";
+              li.addEventListener("click", () => {
+                selectCustomer(item);
+              });
+              resultBox.appendChild(li);
+            });
+
+            resultBox.classList.remove("hidden");
+          })
+          .catch(error => {
+            console.error('Fetch error:', error);
+            resultBox.innerHTML = '<li class="px-4 py-2 text-red-500">Error dalam pencarian</li>';
+            setTimeout(() => {
+              resultBox.classList.add("hidden");
+            }, 2000);
+          });
+        }, 300); // 300ms delay
+      });
+
+      function selectCustomer(item) {
+        searchInput.value = `${item.nomor_kwh} - ${item.nama_pelanggan}`;
+        idInput.value = item.id;
+        resultBox.classList.add("hidden");
+        
+        // Show selected customer info
+        selectedInfo.textContent = `${item.nomor_kwh} - ${item.nama_pelanggan}`;
+        selectedCustomer.classList.remove("hidden");
+      }
+
+      function clearSelectedCustomer() {
+        idInput.value = "";
+        selectedCustomer.classList.add("hidden");
+      }
+
+      // Close autocomplete on outside click
+      document.addEventListener("click", function(e) {
+        if (!searchInput.contains(e.target) && !resultBox.contains(e.target)) {
+          resultBox.classList.add("hidden");
+        }
+      });
+
+      // Clear selection when input is manually changed
+      searchInput.addEventListener("keydown", function(e) {
+        if (e.key === "Backspace" || e.key === "Delete") {
+          clearSelectedCustomer();
+        }
+      });
+    </script>
+  @endpush
 @endsection

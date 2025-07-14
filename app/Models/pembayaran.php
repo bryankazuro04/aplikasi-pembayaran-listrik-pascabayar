@@ -16,7 +16,7 @@ class pembayaran extends Model
 
     public function tagihan() : BelongsTo
     {
-        return $this->belongsTo(tagihan::class);
+        return $this->belongsTo(tagihan::class, 'id_tagihan', 'id');
     }
 
     public function pelanggan() : BelongsTo

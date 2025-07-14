@@ -133,7 +133,7 @@
                   <option value="">-- Pilih Tarif --</option>
                   @foreach ($tarif ?? [] as $t)
                     <option value="{{ $t->id }}">
-                      {{ number_format($t->daya) }} VA - Rp{{ number_format($t->tarif_per_kWh, 0, ',', '.') }}/kWh
+                      {{ number_format($t->daya) }} VA - Rp{{ number_format($t->tarif_per_kwh, 0, ',', '.') }}/kWh
                     </option>
                   @endforeach
                 </select>

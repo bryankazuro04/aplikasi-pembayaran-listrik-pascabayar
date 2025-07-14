@@ -17,19 +17,18 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth:web', 'admin'])->group(function () {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
-    // Route::get('/pelanggan/search', [PelangganController::class, 'search'])->name('pelanggan.search');
-    // Route::get('/pelanggan/get-by-nomor-kwh', [PelangganController::class, 'getByNomorKwh'])->name('pelanggan.getByNomorKwh');
+    Route::get('/pelanggan/search', [PelangganController::class, 'search'])->name('pelanggan.search');
     Route::resources([
         'pelanggan' => PelangganController::class,
         'penggunaan' => PenggunaanController::class,
         'tarif' => TarifController::class,
     ]);
+    Route::resource('tagihan', PembayaranController::class)->except(['index', 'show']);
     Route::resource('pembayaran', PembayaranController::class)->except(['store', 'show']);
 });
 
 Route::middleware(['auth:pelanggan', 'pelanggan'])->group(function () {
     Route::get('/home', [PelangganController::class, 'home'])->name('pelanggan.home');
-    // Route::get('/pembayaran/create/{id}', [PembayaranController::class, 'create'])->name('pembayaran.create');
+    Route::resource('tagihan', TagihanController::class)->only(['index', 'show']);
     Route::resource('pembayaran', PembayaranController::class)->only(['store', 'show']);
-    Route::resource('tagihan', TagihanController::class);
 });

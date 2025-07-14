@@ -16,7 +16,7 @@
         </div>
       </div>
 
-      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <div class="rounded-lg bg-gray-50 p-4">
           <h3 class="text-sm font-medium text-gray-600">Nama Pelanggan</h3>
           <p class="mt-1 text-lg font-semibold text-gray-800">{{ $pelanggan->nama_pelanggan ?? '-' }}</p>
@@ -30,10 +30,11 @@
           <p class="mt-1 text-lg font-semibold text-gray-800">Rp
             {{ number_format($pelanggan->tarif->tarif_per_kwh ?? 0, 0, ',', '.') }}</p>
         </div>
-        <div class="rounded-lg bg-gray-50 p-4">
-          <h3 class="text-sm font-medium text-gray-600">Alamat</h3>
-          <p class="mt-1 text-sm text-gray-800">{{ $pelanggan->alamat ?? '-' }}</p>
-        </div>
+      </div>
+
+      <div class="rounded-lg bg-gray-50 p-4 mt-3">
+        <h3 class="text-sm font-medium text-gray-600">Alamat</h3>
+        <p class="mt-1 text-sm text-gray-800">{{ $pelanggan->alamat ?? '-' }}</p>
       </div>
     </div>
 

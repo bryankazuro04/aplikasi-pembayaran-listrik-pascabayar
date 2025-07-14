@@ -101,7 +101,7 @@
     </div>
 
     <!-- Modal Tambah Tarif -->
-    <div id="addTarifModal" class="fixed inset-0 hidden h-full w-full overflow-y-auto bg-gray-600/40 p-4">
+    <div id="addTarifModal" class="fixed inset-0 hidden h-full w-full overflow-y-auto bg-gray-600/40">
       <div class="flex min-h-screen items-center justify-center">
         <div class="relative w-full max-w-md rounded-lg border border-gray-200 bg-white p-6 shadow-xl">
           <div class="mb-4">

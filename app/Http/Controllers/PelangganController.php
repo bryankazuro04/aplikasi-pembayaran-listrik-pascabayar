@@ -68,23 +68,27 @@ class PelangganController extends Controller
      */
     public function search(Request $request)
     {
-        $query = $request->get('query');
-
-        if (empty($query)) {
-            return response()->json([]);
+        try {
+            $query = $request->get('q');
+    
+            if (empty($query) || strlen($query) < 2) {
+                return response()->json([]);
+            }
+    
+            $pelanggan = pelanggan::searchByNomorKwh($query);
+    
+            return response()->json(
+                $pelanggan->map(function ($item) {
+                    return [
+                        'id' => $item->id,
+                        'nomor_kwh' => $item->nomor_kwh,
+                        'nama_pelanggan' => $item->nama_pelanggan,
+                    ];
+                }),
+            );
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Terjadi kesalahan saat mencari pelanggan: ' . $e->getMessage()], 500);
         }
-
-        $pelanggan = pelanggan::searchByNomorKwh($query);
-
-        return response()->json(
-            $pelanggan->map(function ($item) {
-                return [
-                    'id' => $item->id,
-                    'nomor_kwh' => $item->nomor_kwh,
-                    'nama_pelanggan' => $item->nama_pelanggan,
-                ];
-            }),
-        );
     }
 
     /**

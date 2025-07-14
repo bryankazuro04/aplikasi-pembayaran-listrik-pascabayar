@@ -36,7 +36,7 @@ class TagihanController extends Controller
         // Check if tagihan already exists for this penggunaan
         $existingTagihan = Tagihan::where('id_penggunaan', $penggunaan_id)->first();
         if ($existingTagihan) {
-            return redirect()->route('tagihan.show', $existingTagihan->id)
+            return redirect()->route('penggunaan.index', $existingTagihan->id)
                 ->with('info', 'Tagihan untuk periode ini sudah dibuat sebelumnya');
         }
 
@@ -56,7 +56,7 @@ class TagihanController extends Controller
 
             DB::commit();
 
-            return redirect()->route('tagihan.index', $tagihan->id)
+            return redirect()->route('penggunaan.index', $tagihan->id)
                 ->with('success', 'Tagihan berhasil dibuat');
 
         } catch (\Exception $e) {

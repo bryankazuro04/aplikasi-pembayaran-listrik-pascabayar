@@ -6,11 +6,11 @@
     <title>Login - Sistem Pembayaran Listrik</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 min-h-screen">
+<body class="bg-yellow-500/50 min-h-screen">
     <div class="min-h-screen flex items-center justify-center p-6">
         <div class="max-w-md w-full space-y-8 bg-white rounded-2xl shadow-xl p-8 relative overflow-hidden">
             <!-- Decorative Elements -->
-            <div class="absolute top-0 left-0 w-full h-2 bg-yellow-400"></div>
+            <div class="absolute top-0 left-0 w-full h-2 bg-blue-600"></div>
             <div class="absolute top-2 right-4 text-blue-600">
                 <svg class="w-16 h-16 opacity-10" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M11.5 3.364L10.086 4.78L11.5 6.194L12.914 4.78L11.5 3.364ZM20.315 12.179L18.901 13.593L20.315 15.007L21.729 13.593L20.315 12.179ZM2.685 12.179L1.271 13.593L2.685 15.007L4.099 13.593L2.685 12.179ZM11.5 18.364L10.086 19.78L11.5 21.194L12.914 19.78L11.5 18.364ZM14.986 7.222L13.572 8.636L14.986 10.05L16.4 8.636L14.986 7.222ZM8.014 7.222L6.6 8.636L8.014 10.05L9.428 8.636L8.014 7.222ZM14.986 15.222L13.572 16.636L14.986 18.05L16.4 16.636L14.986 15.222ZM8.014 15.222L6.6 16.636L8.014 18.05L9.428 16.636L8.014 15.222Z"/>

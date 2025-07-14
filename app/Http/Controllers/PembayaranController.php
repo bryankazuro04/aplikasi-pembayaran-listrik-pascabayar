@@ -46,6 +46,7 @@ class PembayaranController extends Controller
             'bulan' => now()->month,
             'biaya_admin' => $biaya_admin,
             'total_bayar' => $total_bayar,
+            // 'id_user' => Auth::id(),
         ]);
 
         $tagihan->update(['status_pembayaran' => 1]);
