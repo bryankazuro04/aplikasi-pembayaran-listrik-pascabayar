@@ -23,12 +23,12 @@ Route::middleware(['auth:web', 'admin'])->group(function () {
         'penggunaan' => PenggunaanController::class,
         'tarif' => TarifController::class,
     ]);
-    Route::resource('tagihan', PembayaranController::class)->except(['index', 'show']);
     Route::resource('pembayaran', PembayaranController::class)->except(['store', 'show']);
 });
 
 Route::middleware(['auth:pelanggan', 'pelanggan'])->group(function () {
     Route::get('/home', [PelangganController::class, 'home'])->name('pelanggan.home');
-    Route::resource('tagihan', TagihanController::class)->only(['index', 'show']);
     Route::resource('pembayaran', PembayaranController::class)->only(['store', 'show']);
 });
+
+Route::resource('tagihan', TagihanController::class);

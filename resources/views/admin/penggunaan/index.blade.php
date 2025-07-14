@@ -38,7 +38,7 @@
               <tr class="transition-colors duration-200 hover:bg-gray-50">
                 <td class="px-6 py-4 font-medium">{{ $loop->iteration }}</td>
                 <td class="px-6 py-4 font-semibold text-gray-800">{{ $penggunaan->pelanggan->nama_pelanggan }}</td>
-                <td class="px-6 py-4">{{ date('F Y', strtotime($penggunaan->tahun . '-' . $penggunaan->bulan)) }}</td>
+                <td class="px-6 py-4">{{ \Carbon\Carbon::create($penggunaan->tahun, $penggunaan->bulan)->locale('id')->translatedFormat('F Y') }}</td>
                 <td class="px-6 py-4 text-right">{{ number_format($penggunaan->meter_awal) }}</td>
                 <td class="px-6 py-4 text-right">{{ number_format($penggunaan->meter_akhir) }}</td>
                 <td class="px-6 py-4 text-center">

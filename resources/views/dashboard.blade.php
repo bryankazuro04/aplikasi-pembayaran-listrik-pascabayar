@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <div class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
+    <div class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2">
       <a href="{{ route('pelanggan.create') }}" class="rounded-lg bg-white p-4 shadow transition-shadow hover:shadow-md">
         <div class="flex items-center space-x-3">
           <div class="rounded-full bg-blue-100 p-3">
@@ -38,7 +38,7 @@
         </div>
       </a>
 
-      <a href="{{ route('tarif.index') }}" class="rounded-lg bg-white p-4 shadow transition-shadow hover:shadow-md">
+      <a href="{{ route('penggunaan.index') }}" class="rounded-lg bg-white p-4 shadow transition-shadow hover:shadow-md">
         <div class="flex items-center space-x-3">
           <div class="rounded-full bg-green-100 p-3">
             <svg class="h-6 w-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -54,7 +54,7 @@
         </div>
       </a>
 
-      <a href="{{ route('pembayaran.index') }}" class="rounded-lg bg-white p-4 shadow transition-shadow hover:shadow-md">
+      {{-- <a href="{{ route('pembayaran.index') }}" class="rounded-lg bg-white p-4 shadow transition-shadow hover:shadow-md">
         <div class="flex items-center space-x-3">
           <div class="rounded-full bg-yellow-100 p-3">
             <svg class="h-6 w-6 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -68,7 +68,7 @@
             <p class="text-sm text-gray-600">Verifikasi pembayaran</p>
           </div>
         </div>
-      </a>
+      </a> --}}
     </div>
 
     <div class="rounded-lg bg-white p-6 shadow-lg">
@@ -97,7 +97,7 @@
               <tr>
                 <td class="whitespace-nowrap px-6 py-4">{{ $tagihan->pelanggan->nomor_kwh }}</td>
                 <td class="whitespace-nowrap px-6 py-4">{{ $tagihan->pelanggan->nama_pelanggan }}</td>
-                <td class="whitespace-nowrap px-6 py-4">{{ $tagihan->bulan }} {{ $tagihan->tahun }}</td>
+                <td class="whitespace-nowrap px-6 py-4">{{ \Carbon\Carbon::create($tagihan->tahun, $tagihan->bulan)->locale('id')->translatedFormat('F Y') }}</td>
                 <td class="whitespace-nowrap px-6 py-4">
                   {{ number_format($tagihan->penggunaan->meter_akhir - $tagihan->penggunaan->meter_awal) }} kWh</td>
                 <td class="whitespace-nowrap px-6 py-4">Rp {{ number_format($tagihan->pembayaran->total_bayar, 0, ',', '.') }}</td>

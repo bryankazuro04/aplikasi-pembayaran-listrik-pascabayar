@@ -59,7 +59,7 @@
                 <div class="relative rounded-md shadow-sm">
                   <input type="text" id="username" name="username"
                     class="block w-full rounded-lg border border-gray-300 px-4 py-2.5 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                    placeholder="John Doe" required>
+                    placeholder="johndoe" required>
                 </div>
               </div>
 

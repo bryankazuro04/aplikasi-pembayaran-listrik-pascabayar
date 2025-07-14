@@ -56,7 +56,7 @@
           <h3 class="mb-1 text-base font-medium text-emerald-700">Penggunaan Bulan Ini</h3>
           <p class="text-3xl font-bold text-emerald-800">
             {{ number_format($pelanggan->tagihan->last()->jumlah_meter ?? 0) }} kWh</p>
-          <p class="mt-2 text-sm text-emerald-800">Periode {{ date('F Y') }}</p>
+          <p class="mt-2 text-sm text-emerald-800">Periode {{ \Carbon\Carbon::now()->locale('id')->translatedFormat('F Y') }}</p>
         </div>
 
         <div class="rounded-lg bg-purple-50 p-6 text-white">
@@ -96,7 +96,7 @@
               @forelse($pelanggan->penggunaan ?? [] as $t)
                 <tr class="transition-colors hover:bg-gray-50">
                   <td class="whitespace-nowrap px-4 py-3 text-sm font-medium text-gray-900">
-                    {{ \Carbon\Carbon::createFromDate($t->tahun, $t->bulan, 1)->locale('id')->translatedFormat('F Y') }}
+                    {{ \Carbon\Carbon::create($t->tahun, $t->bulan)->locale('id')->translatedFormat('F Y') }}
                   </td>
                   <td class="whitespace-nowrap px-4 py-3 text-sm text-gray-600">
                     {{ number_format($t->meter_awal) }}
