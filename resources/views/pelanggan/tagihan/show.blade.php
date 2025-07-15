@@ -136,10 +136,18 @@
                         <span class="text-gray-700">Tarif per kWh</span>
                         <span class="font-semibold">Rp {{ number_format($tagihan->pelanggan->tarif->tarif_per_kwh, 0, ',', '.') }}</span>
                     </div>
+                    <div class="flex justify-between items-center py-2">
+                        <span class="text-gray-700">Tagihan Pemakaian</span>
+                        <span class="font-semibold">Rp {{ number_format($tagihan->jumlah_meter * $tagihan->pelanggan->tarif->tarif_per_kwh, 0, ',', '.') }}</span>
+                    </div>
+                    <div class="flex justify-between items-center py-2">
+                        <span class="text-gray-700">Biaya Admin</span>
+                        <span class="font-semibold">Rp {{ number_format($biaya_admin, 0, ',', '.') }}</span>
+                    </div>
                     <div class="border-t border-gray-300 pt-3">
                         <div class="flex justify-between items-center">
                             <span class="text-lg font-bold text-gray-900">Total Tagihan</span>
-                            <span class="text-2xl font-bold text-blue-600">Rp {{ number_format($tagihan->pembayaran->total_bayar, 0, ',', '.') }}</span>
+                            <span class="text-2xl font-bold text-blue-600">Rp {{ number_format($total_bayar, 0, ',', '.') }}</span>
                         </div>
                     </div>
                 </div>
@@ -152,17 +160,16 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-medium text-green-700 mb-1">Tanggal Pembayaran</label>
-                            <p class="text-green-900 font-semibold">{{ \Carbon\Carbon::parse($tagihan->pembayaran->tanggal_pembayaran)->format('d/m/Y H:i') }}</p>
+                            <p class="text-green-900 font-semibold">{{ \Carbon\Carbon::parse($tagihan->pembayaran->tanggal_pembayaran)->format('d/m/Y') }}</p>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-green-700 mb-1">Total Bayar</label>
-                            <p class="text-green-900 font-semibold">Rp {{ number_format($tagihan->pembayaran->total_bayar, 0, ',', '.') }}</p>
+                            <p class="text-green-900 font-semibold">Rp {{ number_format($total_bayar, 0, ',', '.') }}</p>
                         </div>
                     </div>
                 </div>
             @endif
 
-            <!-- Action Buttons -->
             <div class="p-6 bg-white border-t border-gray-200">
                 <div class="flex justify-between items-center">
                     <p class="text-sm text-gray-500">

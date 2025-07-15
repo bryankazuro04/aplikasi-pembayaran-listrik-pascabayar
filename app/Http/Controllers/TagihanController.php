@@ -82,8 +82,14 @@ class TagihanController extends Controller
      */
     public function show(tagihan $tagihan)
     {
+        
         $tagihan->load(['pelanggan.tarif', 'penggunaan', 'pembayaran']);
-        return view('pelanggan.tagihan.show', compact('tagihan'));
+        $jumlah_meter = $tagihan->jumlah_meter;
+        $tarif_per_kwh = $tagihan->pelanggan->tarif->tarif_per_kwh;
+        $biaya_admin = 2500;
+
+        $total_bayar = $jumlah_meter * $tarif_per_kwh + $biaya_admin;
+        return view('pelanggan.tagihan.show', compact('tagihan', 'total_bayar', 'biaya_admin'));
     }
 
     /**
