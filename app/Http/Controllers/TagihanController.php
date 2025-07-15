@@ -14,8 +14,12 @@ class TagihanController extends Controller
      */
     public function index()
     {
-        $tagihan = tagihan::with(['pelanggan', 'penggunaan'])->get();
-        return view('pelanggan.tagihan', compact('tagihan'));
+        $pelanggan = auth()
+            ->guard('pelanggan')
+            ->user()
+            ->load(['tagihan']);
+
+        return view('pelanggan.tagihan.index', compact('pelanggan'));
     }
 
     /**
@@ -25,18 +29,17 @@ class TagihanController extends Controller
     public function create(Request $request)
     {
         $penggunaan_id = $request->get('penggunaan_id');
-        
+
         if (!$penggunaan_id) {
             return redirect()->back()->with('error', 'ID Penggunaan tidak ditemukan');
         }
 
         $penggunaan = penggunaan::with(['pelanggan.tarif'])->findOrFail($penggunaan_id);
-        
+
         // Check if tagihan already exists for this penggunaan
         $existingTagihan = tagihan::where('id_penggunaan', $penggunaan_id)->first();
         if ($existingTagihan) {
-            return redirect()->route('penggunaan.index', $existingTagihan->id)
-                ->with('info', 'Tagihan untuk periode ini sudah dibuat sebelumnya');
+            return redirect()->route('penggunaan.index', $existingTagihan->id)->with('info', 'Tagihan untuk periode ini sudah dibuat sebelumnya');
         }
 
         try {
@@ -55,12 +58,11 @@ class TagihanController extends Controller
 
             DB::commit();
 
-            return redirect()->route('penggunaan.index', $tagihan->id)
-                ->with('success', 'Tagihan berhasil dibuat');
-
+            return redirect()->route('penggunaan.index', $tagihan->id)->with('success', 'Tagihan berhasil dibuat');
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect()->back()
+            return redirect()
+                ->back()
                 ->with('error', 'Terjadi kesalahan saat membuat tagihan: ' . $e->getMessage());
         }
     }
@@ -89,7 +91,7 @@ class TagihanController extends Controller
      */
     public function edit(Tagihan $tagihan)
     {
-        // 
+        //
     }
 
     /**

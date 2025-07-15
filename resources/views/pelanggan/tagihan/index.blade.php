@@ -22,10 +22,11 @@
           </thead>
 
           <tbody class="divide-y divide-gray-200 text-gray-700">
-            @forelse ($tagihan as $index => $item)
+            @forelse ($pelanggan->tagihan as $index => $item)
               <tr class="transition-colors duration-200 hover:bg-gray-50">
                 <td class="px-6 py-4 font-medium">{{ $loop->iteration }}</td>
-                <td class="px-6 py-4 font-medium">{{ \Carbon\Carbon::create($item->tahun, $item->bulan)->locale('id')->translatedFormat('F Y') }}</td>
+                <td class="px-6 py-4 font-medium">
+                  {{ \Carbon\Carbon::create($item->tahun, $item->bulan)->locale('id')->translatedFormat('F Y') }}</td>
                 <td class="px-6 py-4">{{ $item->jumlah_meter }} kWh</td>
                 <td class="px-6 py-4 text-center">
                   @if ($item->status_pembayaran == 0)

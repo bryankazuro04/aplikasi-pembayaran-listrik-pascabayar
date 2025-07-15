@@ -16,6 +16,7 @@ class PelangganController extends Controller
     {
         $pelanggan = pelanggan::with(['tarif', 'tagihan', 'pembayaran'])->get();
         $tarifs = \App\Models\tarif::all();
+
         return view('admin.pelanggan.pelanggan', compact('pelanggan', 'tarifs'));
     }
 
@@ -28,7 +29,21 @@ class PelangganController extends Controller
             ->guard('pelanggan')
             ->user()
             ->load(['penggunaan', 'tarif', 'tagihan', 'pembayaran']);
-        return view('pelanggan.index', compact('pelanggan'));
+
+        $currentMonth = \Carbon\Carbon::now()->month;
+        $currentYear = \Carbon\Carbon::now()->year;
+
+        $penggunaanBulanIni = $pelanggan->penggunaan->where('bulan', $currentMonth)->where('tahun', $currentYear)->first();
+
+        if ($penggunaanBulanIni) {
+            $jumlahMeter = $penggunaanBulanIni->meter_akhir - $penggunaanBulanIni->meter_awal;
+            $tarifPerKwh = $pelanggan->tarif->tarif_per_kwh ?? 0;
+            $biayaAdmin = 2500;
+            $totalTagihan = $jumlahMeter * $tarifPerKwh + $biayaAdmin;
+        } else {
+            $totalTagihan = 0;
+        }
+        return view('pelanggan.index', compact('pelanggan', 'totalTagihan'));
     }
 
     /**
@@ -45,10 +60,12 @@ class PelangganController extends Controller
      */
     public function store(StorepelangganRequest $request)
     {
-        $request->merge([
-            'password' => bcrypt($request->password),
-        ]);
-        pelanggan::create($request->validated());
+        $validatedData = $request->validated();
+        
+        // Hash password
+        $validatedData['password'] = bcrypt($validatedData['password']);
+        
+        pelanggan::create($validatedData);
         return redirect()->route('dashboard');
     }
 
@@ -57,7 +74,7 @@ class PelangganController extends Controller
      */
     public function show()
     {
-        // 
+        //
     }
 
     /**
@@ -70,13 +87,13 @@ class PelangganController extends Controller
     {
         try {
             $query = $request->get('q');
-    
+
             if (empty($query) || strlen($query) < 2) {
                 return response()->json([]);
             }
-    
+
             $pelanggan = pelanggan::searchByNomorKwh($query);
-    
+
             return response()->json(
                 $pelanggan->map(function ($item) {
                     return [

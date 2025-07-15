@@ -46,9 +46,11 @@
         <div class="rounded-lg bg-blue-50 p-6 text-white">
           <h3 class="mb-1 text-base font-medium text-blue-700">Total Tagihan</h3>
           <p class="text-3xl font-bold text-blue-800">Rp
-            {{ number_format($pelanggan->pembayaran->last()->total_bayar ?? 0, 0, ',', '.') }}</p>
-          @if (($pelanggan->tagihan->last()->status ?? 0) > 0)
-            <p class="mt-2 text-sm text-blue-800">{{ $pelanggan->tagihan->last()->status }} tagihan belum dibayar</p>
+            
+            {{ $pelanggan->tagihan->last()->status_pembayaran != 0 ? '0' : number_format($totalTagihan ?? 0, 0, ',', '.') }}
+          </p>
+          @if (($pelanggan->tagihan->last()->status_pembayaran ?? 0) > 0)
+            <p class="mt-2 text-sm text-blue-800">{{ $pelanggan->tagihan->last()->status_pembayaran }} tagihan belum dibayar</p>
           @endif
         </div>
 

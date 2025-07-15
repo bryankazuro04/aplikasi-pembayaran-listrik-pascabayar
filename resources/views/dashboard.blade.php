@@ -53,22 +53,6 @@
           </div>
         </div>
       </a>
-
-      {{-- <a href="{{ route('pembayaran.index') }}" class="rounded-lg bg-white p-4 shadow transition-shadow hover:shadow-md">
-        <div class="flex items-center space-x-3">
-          <div class="rounded-full bg-yellow-100 p-3">
-            <svg class="h-6 w-6 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2z" />
-            </svg>
-          </div>
-
-          <div>
-            <h3 class="font-semibold text-gray-800">Kelola Pembayaran</h3>
-            <p class="text-sm text-gray-600">Verifikasi pembayaran</p>
-          </div>
-        </div>
-      </a> --}}
     </div>
 
     <div class="rounded-lg bg-white p-6 shadow-lg">
