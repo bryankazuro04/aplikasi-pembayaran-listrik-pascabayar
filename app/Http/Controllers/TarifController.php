@@ -32,7 +32,7 @@ class TarifController extends Controller
      */
     public function create()
     {
-        //
+        return abort(404);
     }
 
     /**
@@ -62,7 +62,7 @@ class TarifController extends Controller
      */
     public function show(tarif $tarif)
     {
-        //
+        return abort(404);
     }
 
     /**
@@ -70,7 +70,7 @@ class TarifController extends Controller
      */
     public function edit(tarif $tarif)
     {
-        //
+        return abort(404);
     }
 
     /**

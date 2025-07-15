@@ -97,7 +97,7 @@ class TagihanController extends Controller
      */
     public function edit(Tagihan $tagihan)
     {
-        //
+        return abort(404);
     }
 
     /**
@@ -105,7 +105,7 @@ class TagihanController extends Controller
      */
     public function update(Request $request, Tagihan $tagihan)
     {
-        //
+        return abort(404);
     }
 
     /**
@@ -113,6 +113,6 @@ class TagihanController extends Controller
      */
     public function destroy(Tagihan $tagihan)
     {
-        //
+        return abort(404);
     }
 }

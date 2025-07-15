@@ -44,16 +44,11 @@ class PembayaranController extends Controller
             'bulan' => now()->month,
             'biaya_admin' => $biaya_admin,
             'total_bayar' => $total_bayar,
-            // 'id_user' => Auth::id(),
         ]);
 
         $tagihan->update(['status_pembayaran' => 1]);
 
         return redirect()->route('pelanggan.home')->with('success', 'Pembayaran berhasil dilakukan.');
-        // if(Auth::guard('pelanggan')->check()) {
-        // } else if (Auth::guard('web')->check()) {
-        //     return redirect()->route('tagihan.index')->with('success', 'Pembayaran berhasil dilakukan.');
-        // }
     }
 
     /**

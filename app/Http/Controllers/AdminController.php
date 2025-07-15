@@ -6,7 +6,6 @@ use App\Models\pelanggan;
 use App\Models\pembayaran;
 use App\Models\tagihan;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
@@ -16,8 +15,6 @@ class AdminController extends Controller
      */
     public function index()
     {
-        // --- Data untuk Kartu Statistik ---
-
         // 1. Total Pelanggan (Asumsi level_id untuk pelanggan adalah 2)
         $totalPelanggan = pelanggan::count();
 
@@ -33,8 +30,6 @@ class AdminController extends Controller
             ->orderBy('bulan', 'desc')
             ->limit(5)
             ->get();
-
-        // --- Data untuk Grafik ---
 
         // 1. Grafik Batang: Pembayaran per Bulan (6 bulan terakhir)
         $pembayaranPerBulan = pembayaran::select(DB::raw('YEAR(tanggal_pembayaran) as tahun'), DB::raw('MONTH(tanggal_pembayaran) as bulan'), DB::raw('SUM(total_bayar) as total'))
@@ -63,53 +58,5 @@ class AdminController extends Controller
             'totalPembayaranPerBulan' => $totalPembayaranPerBulan,
             'tagihanLunas' => $tagihanLunas,
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }

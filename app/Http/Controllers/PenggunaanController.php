@@ -41,7 +41,7 @@ class PenggunaanController extends Controller
      */
     public function show(penggunaan $penggunaan)
     {
-        //
+        return abort(404);
     }
 
     /**
@@ -49,7 +49,7 @@ class PenggunaanController extends Controller
      */
     public function edit(penggunaan $penggunaan)
     {
-        //
+        return abort(404);
     }
 
     /**
@@ -57,7 +57,7 @@ class PenggunaanController extends Controller
      */
     public function update(UpdatepenggunaanRequest $request, penggunaan $penggunaan)
     {
-        //
+        return abort(404);
     }
 
     /**
@@ -65,6 +65,6 @@ class PenggunaanController extends Controller
      */
     public function destroy(penggunaan $penggunaan)
     {
-        //
+        return abort(404);
     }
 }

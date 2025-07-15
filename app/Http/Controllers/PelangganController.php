@@ -74,7 +74,7 @@ class PelangganController extends Controller
      */
     public function show()
     {
-        //
+        return abort(404);
     }
 
     /**
@@ -113,7 +113,7 @@ class PelangganController extends Controller
      */
     public function edit(pelanggan $pelanggan)
     {
-        //
+        return abort(404);
     }
 
     /**
