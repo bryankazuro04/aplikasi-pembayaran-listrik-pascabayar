@@ -32,7 +32,7 @@
         </div>
       </div>
 
-      <div class="rounded-lg bg-gray-50 p-4 mt-3">
+      <div class="mt-3 rounded-lg bg-gray-50 p-4">
         <h3 class="text-sm font-medium text-gray-600">Alamat</h3>
         <p class="mt-1 text-sm text-gray-800">{{ $pelanggan->alamat ?? '-' }}</p>
       </div>
@@ -56,13 +56,14 @@
           <h3 class="mb-1 text-base font-medium text-emerald-700">Penggunaan Bulan Ini</h3>
           <p class="text-3xl font-bold text-emerald-800">
             {{ number_format($pelanggan->tagihan->last()->jumlah_meter ?? 0) }} kWh</p>
-          <p class="mt-2 text-sm text-emerald-800">Periode {{ \Carbon\Carbon::now()->locale('id')->translatedFormat('F Y') }}</p>
+          <p class="mt-2 text-sm text-emerald-800">Periode
+            {{ \Carbon\Carbon::now()->locale('id')->translatedFormat('F Y') }}</p>
         </div>
 
         <div class="rounded-lg bg-purple-50 p-6 text-white">
           <h3 class="mb-1 text-base font-medium text-violet-700">Status Pembayaran</h3>
-            <p class="text-2xl font-bold text-violet-800">
-              {{ $pelanggan->tagihan->last()->status_pembayaran > 0 ? 'Belum ada tagihan' : 'Belum lunas' }}</p>
+          <p class="text-2xl font-bold text-violet-800">
+            {{ $pelanggan->tagihan->last()->status_pembayaran > 0 ? 'Belum ada tagihan' : 'Belum lunas' }}</p>
           @if ($jatuhTempo ?? false)
             <p class="mt-2 text-sm text-violet-800">Jatuh tempo: {{ $jatuhTempo }}</p>
           @endif
@@ -109,13 +110,12 @@
                   </td>
                   <td class="whitespace-nowrap px-4 py-3 text-sm font-medium text-gray-900">
                     @php
-                      $jumlah_meter = $t->meter_akhir - $t->meter_awal;
-                      $total_tagihan = $jumlah_meter * $t->pelanggan->tarif->tarif_per_kWh;
-                      if ($t->tagihan->pembayaran) {
-                          $total_tagihan += $t->tagihan->pembayaran->biaya_admin;
-                      }
+                      $jumlahMeter = $t->tagihan->penggunaan->meter_akhir - $t->tagihan->penggunaan->meter_awal;
+                      $tarifPerKwh = $t->tagihan->pelanggan->tarif->tarif_per_kwh ?? 0;
+                      $biayaAdmin = 2500;
+                      $totalTagihan = $jumlahMeter * $tarifPerKwh + $biayaAdmin;
                     @endphp
-                    Rp {{ number_format($t->tagihan->pembayaran->total_bayar, 0, ',', '.') }}
+                    Rp {{ number_format($totalTagihan, 0, ',', '.') }}
                   </td>
                   <td class="whitespace-nowrap px-4 py-3">
                     @if ($t->tagihan->status_pembayaran === 1)
