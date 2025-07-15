@@ -42,7 +42,7 @@
                 <td class="px-6 py-4 text-right">{{ number_format($penggunaan->meter_awal) }}</td>
                 <td class="px-6 py-4 text-right">{{ number_format($penggunaan->meter_akhir) }}</td>
                 <td class="px-6 py-4 text-center">
-                  @if (!\App\Models\Tagihan::where('id_penggunaan', $penggunaan->id)->exists())
+                  @if (!\App\Models\tagihan::where('id_penggunaan', $penggunaan->id)->exists())
                     <a href="{{ route('tagihan.create', ['penggunaan_id' => $penggunaan->id]) }}"
                       class="inline-flex items-center rounded-lg bg-green-500 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:bg-green-600 hover:shadow-lg">
                       <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
