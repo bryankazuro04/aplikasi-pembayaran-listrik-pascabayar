@@ -54,7 +54,7 @@
             <h3 class="text-lg font-medium leading-6 text-gray-900">Informasi Akun</h3>
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
               <!-- Username -->
-              <div class="space-y-2">
+              <div class="space-y-2 md:col-span-2">
                 <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
                 <div class="relative rounded-md shadow-sm">
                   <input type="text" id="username" name="username"
@@ -68,15 +68,15 @@
                 <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
                 <input type="password" id="password" name="password"
                   class="block w-full rounded-lg border border-gray-300 px-4 py-2.5 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                  placeholder="********" required>
+                  placeholder="password" required>
               </div>
 
               <!-- Password Confirmed -->
-              <div class="space-y-2 md:col-span-2">
-                <label for="passwordConfirmed" class="block text-sm font-medium text-gray-700">Password Confirmed</label>
+              <div class="space-y-2">
+                <label for="passwordConfirmed" class="block text-sm font-medium text-gray-700">Password Confirmation</label>
                 <input id="passwordConfirmed" name="password_confirmation" type="password"
                   class="block w-full rounded-lg border border-gray-300 px-4 py-2.5 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                  placeholder="********" required></input>
+                  placeholder="password confirmation" required></input>
               </div>
             </div>
           </div>
