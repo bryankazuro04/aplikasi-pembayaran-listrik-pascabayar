@@ -15,7 +15,7 @@ class PembayaranController extends Controller
      */
     public function index()
     {
-        $pembayaran = Pembayaran::with(['tagihan.pelanggan'])->get();
+        $pembayaran = pembayaran::with(['tagihan.pelanggan'])->get();
         return view('admin.pembayaran', compact('pembayaran'));
     }
 
@@ -32,7 +32,7 @@ class PembayaranController extends Controller
      */
     public function store(Request $request)
     {
-        $tagihan = Tagihan::with('pelanggan.tarif')->findOrFail($request->id);
+        $tagihan = tagihan::with('pelanggan.tarif')->findOrFail($request->id);
 
         $jumlah_meter = $tagihan->jumlah_meter;
         $tarif_per_kwh = $tagihan->pelanggan->tarif->tarif_per_kwh;
@@ -63,7 +63,7 @@ class PembayaranController extends Controller
      */
     public function show(string $id)
     {
-        $tagihan = Tagihan::with(['penggunaan', 'pelanggan.tarif'])->findOrFail($id);
+        $tagihan = tagihan::with(['penggunaan', 'pelanggan.tarif'])->findOrFail($id);
 
         $jumlah_meter = $tagihan->jumlah_meter;
         $tarif_per_kwh = $tagihan->pelanggan->tarif->tarif_per_kwh;

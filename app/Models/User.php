@@ -51,11 +51,11 @@ class User extends Authenticatable
 
     public function level() : BelongsTo
     {
-        return $this->belongsTo(Level::class, 'id_level', 'id');
+        return $this->belongsTo(level::class, 'id_level', 'id');
     }
 
     public function pembayaran() : HasMany
     {
-        return $this->hasMany(Pembayaran::class, 'id_user');
+        return $this->hasMany(pembayaran::class, 'id_user');
     }
 }

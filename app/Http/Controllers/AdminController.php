@@ -29,7 +29,7 @@ class AdminController extends Controller
         $tagihanBelumLunas = tagihan::where('status_pembayaran', false)->count();
 
         // --- Data untuk Tabel Tagihan Terbaru ---
-        $tagihanTerbaru = Tagihan::with(['pelanggan', 'penggunaan'])
+        $tagihanTerbaru = tagihan::with(['pelanggan', 'penggunaan'])
             ->orderBy('tahun', 'desc')
             ->orderBy('bulan', 'desc')
             ->limit(5)
@@ -38,7 +38,7 @@ class AdminController extends Controller
         // --- Data untuk Grafik ---
 
         // 1. Grafik Batang: Pembayaran per Bulan (6 bulan terakhir)
-        $pembayaranPerBulan = Pembayaran::select(DB::raw('YEAR(tanggal_pembayaran) as tahun'), DB::raw('MONTH(tanggal_pembayaran) as bulan'), DB::raw('SUM(total_bayar) as total'))
+        $pembayaranPerBulan = pembayaran::select(DB::raw('YEAR(tanggal_pembayaran) as tahun'), DB::raw('MONTH(tanggal_pembayaran) as bulan'), DB::raw('SUM(total_bayar) as total'))
             ->where('tanggal_pembayaran', '>=', Carbon::now()->subMonths(6))
             ->groupBy(DB::raw('YEAR(tanggal_pembayaran)'), DB::raw('MONTH(tanggal_pembayaran)'))
             ->orderBy('tahun', 'asc')
@@ -51,7 +51,7 @@ class AdminController extends Controller
         $totalPembayaranPerBulan = $pembayaranPerBulan->pluck('total');
 
         // 2. Grafik Donat: Status Tagihan
-        $tagihanLunas = Tagihan::where('status_pembayaran', true)->count();
+        $tagihanLunas = tagihan::where('status_pembayaran', true)->count();
         // Variabel $tagihanBelumLunas sudah dihitung di atas
 
         // Mengirim semua data ke view

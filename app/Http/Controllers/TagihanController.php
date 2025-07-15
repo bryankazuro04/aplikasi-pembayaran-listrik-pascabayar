@@ -15,7 +15,7 @@ class TagihanController extends Controller
      */
     public function index()
     {
-        $tagihan = Tagihan::with(['pelanggan', 'penggunaan'])->get();
+        $tagihan = tagihan::with(['pelanggan', 'penggunaan'])->get();
         return view('pelanggan.tagihan', compact('tagihan'));
     }
 
@@ -31,10 +31,10 @@ class TagihanController extends Controller
             return redirect()->back()->with('error', 'ID Penggunaan tidak ditemukan');
         }
 
-        $penggunaan = Penggunaan::with(['pelanggan.tarif'])->findOrFail($penggunaan_id);
+        $penggunaan = penggunaan::with(['pelanggan.tarif'])->findOrFail($penggunaan_id);
         
         // Check if tagihan already exists for this penggunaan
-        $existingTagihan = Tagihan::where('id_penggunaan', $penggunaan_id)->first();
+        $existingTagihan = tagihan::where('id_penggunaan', $penggunaan_id)->first();
         if ($existingTagihan) {
             return redirect()->route('penggunaan.index', $existingTagihan->id)
                 ->with('info', 'Tagihan untuk periode ini sudah dibuat sebelumnya');
@@ -45,7 +45,7 @@ class TagihanController extends Controller
 
             $jumlah_meter = $penggunaan->meter_akhir - $penggunaan->meter_awal;
 
-            $tagihan = Tagihan::create([
+            $tagihan = tagihan::create([
                 'id_penggunaan' => $penggunaan->id,
                 'id_pelanggan' => $penggunaan->id_pelanggan,
                 'bulan' => $penggunaan->bulan,
@@ -79,7 +79,7 @@ class TagihanController extends Controller
      * Display the specified resource.
      * Menampilkan tagihan sebagai acuan pembayaran
      */
-    public function show(Tagihan $tagihan)
+    public function show(tagihan $tagihan)
     {
         $tagihan->load(['pelanggan.tarif', 'penggunaan', 'pembayaran']);
         return view('pelanggan.tagihan.show', compact('tagihan'));
