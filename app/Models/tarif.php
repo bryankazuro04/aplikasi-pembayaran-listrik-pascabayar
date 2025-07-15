@@ -16,6 +16,6 @@ class tarif extends Model
 
     public function pelanggan(): HasMany
     {
-        return $this->hasMany(Pelanggan::class, 'id_tarif');
+        return $this->hasMany(pelanggan::class, 'id_tarif');
     }
 }

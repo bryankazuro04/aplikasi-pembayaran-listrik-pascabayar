@@ -17,16 +17,16 @@ class tagihan extends Model
 
     public function pelanggan() : BelongsTo
     {
-        return $this->belongsTo(Pelanggan::class, 'id_pelanggan', 'id');
+        return $this->belongsTo(pelanggan::class, 'id_pelanggan', 'id');
     }
 
     public function penggunaan() : BelongsTo
     {
-        return $this->belongsTo(Penggunaan::class, 'id_penggunaan', 'id');
+        return $this->belongsTo(penggunaan::class, 'id_penggunaan', 'id');
     }
 
     public function pembayaran() : HasOne
     {
-        return $this->hasOne(Pembayaran::class, 'id_tagihan', 'id');
+        return $this->hasOne(pembayaran::class, 'id_tagihan', 'id');
     }
 }
