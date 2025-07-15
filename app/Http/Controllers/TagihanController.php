@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tagihan;
-use App\Models\Pelanggan;
-use App\Models\Penggunaan;
+use App\Models\tagihan;
+use App\Models\penggunaan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

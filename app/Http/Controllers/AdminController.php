@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\level;
 use App\Models\pelanggan;
 use App\Models\pembayaran;
 use App\Models\tagihan;
